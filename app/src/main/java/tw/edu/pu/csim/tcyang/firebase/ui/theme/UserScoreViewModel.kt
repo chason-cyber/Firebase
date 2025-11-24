@@ -10,6 +10,14 @@ import tw.edu.pu.csim.tcyang.firebase.UserScoreModel
 import tw.edu.pu.csim.tcyang.firebase.UserScoreRepository
 
 class UserScoreViewModel : ViewModel() {
+    var user by mutableStateOf("")
+        private set // 讓狀態只能在 ViewModel 內部被修改
+
+    // 更新使用者姓名的函式
+    fun onUserChange(newUser: String) {
+        user = newUser
+    }
+
     private val userScoreRepository = UserScoreRepository()
 
     var message by mutableStateOf("訊息")
@@ -31,4 +39,15 @@ class UserScoreViewModel : ViewModel() {
         }
     }
 
+    fun getUser(userScore: UserScoreModel) {
+        viewModelScope.launch {
+            message = userScoreRepository.getUser(userScore)
+        }
+    }
+
+    fun  orderUser(userScore: UserScoreModel) {
+        viewModelScope.launch {
+            message = userScoreRepository.orderUser()
+        }
+    }
 }
